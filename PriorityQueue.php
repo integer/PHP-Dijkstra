@@ -1,4 +1,5 @@
 <?php
+namespace Dijkstra;
 
 /*
  * Author: doug@neverfear.org
@@ -38,7 +39,7 @@ class PriorityQueue {
 			$lastnode = null;
 			$added = false;
 			while($node) {
-				if ($comparator($newnode, $node) < 0) {
+                if (call_user_func($comparator, $newnode, $node) < 0) {
 					// newnode has higher priority
 					$newnode->next = $node;
 					if ($lastnode == null) {

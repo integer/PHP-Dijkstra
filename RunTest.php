@@ -6,6 +6,8 @@
 
 require("Dijkstra.php");
 
+use \Dijkstra\Graph;
+
 function runTest() {
 	$g = new Graph();
 	$g->addedge("a", "b", 4);

@@ -1,4 +1,5 @@
 <?php
+namespace Dijkstra;
 /*
  * Author: doug@neverfear.org
  */
@@ -43,7 +44,7 @@ class Graph {
 		$previous = array();
 		
 		$queue = array();
-		$Q = new PriorityQueue("compareWeights");
+		$Q = new PriorityQueue(array($this, 'compareWeights'));
 		$Q->add(array($dist[$from], $from));
 		
 		$nodes = $this->nodes;
@@ -99,11 +100,8 @@ class Graph {
 		list($distances, $prev) = $this->paths_from($from);
 		return $this->paths_to($prev, $to);
 	}
-	
+
+    public function compareWeights($a, $b) {
+        return $a->data[0] - $b->data[0];
+    }
 }
-
-function compareWeights($a, $b) {
-	return $a->data[0] - $b->data[0];
-}
-
-
