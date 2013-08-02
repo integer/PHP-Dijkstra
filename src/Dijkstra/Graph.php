@@ -8,6 +8,13 @@ namespace Dijkstra;
 
 class Graph
 {
+	/**
+	 * There is no path from start vertex to end vertex
+	 *
+	 * @var int
+	 */
+	const NO_PATH = -1;
+
 	protected $nodes = array();
 	protected $vertices = array();
 
@@ -104,6 +111,10 @@ class Graph
 	{
 		list($distances, $prev) = $this->getPathsFrom($from);
 		$path = $this->getPathsTo($prev, $to);
+
+		if (!isset($distances[end($path)])) {
+			return self::NO_PATH;
+		}
 
 		return $distances[end($path)];
 	}
