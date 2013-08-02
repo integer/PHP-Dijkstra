@@ -16,6 +16,8 @@ function runTest() {
 	$g->addEdge("a", "d", 1);
 
 	$g->addEdge("b", "a", 74);
+	$g->addEdge("b", "a", 4);
+	// $g->addEdge("b", "a", -4); // throws exception
 	$g->addEdge("b", "c", 2);
 	$g->addEdge("b", "e", 12);
 
@@ -52,6 +54,8 @@ function runTest() {
 
 		print_r($distances);
 		print_r($path);
+
+		echo $g;
 
 	} catch (\Exception $e) {
 		printf('%s%s', $e->getMessage(), PHP_EOL);

@@ -20,6 +20,10 @@ class Graph
 
 	public function addEdge($start, $end, $weight = 0)
 	{
+		if ($weight < 0) {
+			throw new \Exception(sprintf('Dijkstra\'s algorithm doesn\'t support edges with negative weight. Weight %d given', $weight));
+		}
+
 		if (!in_array($start, $this->vertices)) {
 			$this->vertices[] = $start;
 		}
@@ -33,6 +37,11 @@ class Graph
 		array_push($this->nodes[$start], new Edge($start, $end, $weight));
 	}
 
+	/**
+	 * Returns vertices in graph
+	 *
+	 * @return array
+	 */
 	public function getVertices()
 	{
 		return $this->vertices;
@@ -122,5 +131,35 @@ class Graph
 	public function compareWeights($a, $b)
 	{
 		return $a->data[0] - $b->data[0];
+	}
+
+	public function __toString()
+	{
+		$out = sprintf('%s { %s', get_class($this), PHP_EOL);
+		$backEdges = array();
+		foreach ($this->getVertices() as $vertex) {
+			if (isset($this->nodes[$vertex])) {
+				foreach ($this->nodes[$vertex] as $edge) {
+
+					$twoWay = false;
+					if (isset($backEdges[$edge->start][$edge->end][$edge->weight])){
+						continue; // draw back edge only once
+					}
+					if (isset($this->nodes[$edge->end])) {
+						foreach ($this->nodes[$edge->end] as $backEdge) {
+							if ($backEdge->end === $edge->start && $backEdge->weight === $edge->weight) {
+								$backEdges[$backEdge->start][$backEdge->end][$backEdge->weight] = true;
+								$twoWay = true;
+							}
+						}
+					}
+
+					$out .= sprintf('   %s %s---[%d]---> %s%s', $edge->start, ($twoWay ? '<': '-'), $edge->weight, $edge->end, PHP_EOL);
+				}
+			}
+		}
+		$out .= sprintf('}%s', PHP_EOL);
+
+		return $out;
 	}
 }
