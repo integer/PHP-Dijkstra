@@ -43,15 +43,18 @@ function runTest() {
 
 	$g->addedge("j", "f", 8);
 
+	try {
+		list($distances, $prev) = $g->paths_from('a');
 
-	list($distances, $prev) = $g->paths_from("a");
-	
-	$path = $g->paths_to($prev, "i");
-	
-	print_r($path);
-	
+		$path = $g->paths_to($prev, 'i');
+
+		print_r($distances);
+		print_r($path);
+
+	} catch (\Exception $e) {
+		printf('%s%s', $e->getMessage(), PHP_EOL);
+	}
 }
-
 
 runTest();
 

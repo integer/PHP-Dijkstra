@@ -58,7 +58,7 @@ class Graph {
 			$visited[$u] = True;
 			
 			if (!isset($nodes[$u])) {
-				print "WARNING: '$u' is not found in the node list\n";
+				throw new \Exception(sprintf('Node "%s" is not found in the node list. There is NO EDGE FROM "%s" VERTEX', $u, $u));
 			}
 			
 			foreach($nodes[$u] as $edge) {
