@@ -1,44 +1,38 @@
 <?php
+
 namespace Dijkstra;
 
 /*
- * Author: doug@neverfear.org
+ * @author: doug@neverfear.org
  */
 
-class PriorityList {
-	public $next;
-	public $data;
-	function __construct($data) {
-		$this->next = null;
-		$this->data = $data;
-	}
-}
-
-class PriorityQueue {
-	
+class PriorityQueue
+{
 	private $size;
 	private $liststart;
 	private $comparator;
-	
-	function __construct($comparator) {
+
+	public function __construct($comparator)
+	{
 		$this->size = 0;
 		$this->liststart = null;
 		$this->listend = null;
 		$this->comparator = $comparator;
 	}
-	
-	function add($x) {
+
+	public function add(array $x)
+	{
 		$this->size = $this->size + 1;
-		
-		if($this->liststart == null) {
-			$this->liststart = new PriorityList($x);
+
+		if ($this->liststart === null) {
+			$this->liststart = new QueueItem($x);
 		} else {
 			$node = $this->liststart;
 			$comparator = $this->comparator;
-			$newnode = new PriorityList($x);
+			$newnode = new QueueItem($x);
 			$lastnode = null;
 			$added = false;
-			while($node) {
+			while ($node) {
                 if (call_user_func($comparator, $newnode, $node) < 0) {
 					// newnode has higher priority
 					$newnode->next = $node;
@@ -63,35 +57,39 @@ class PriorityQueue {
 		//print "Debug: Appended node. New size=" . $this->size . "\n";
 		//$this->debug();
 	}
-	
-	function debug() {
+
+	public function debug()
+	{
 		$node = $this->liststart;
 		$i = 0;
 		if (!$node) {
 			print "<< No nodes >>\n";
 			return;
 		}
-		while($node) {
+		while ($node) {
 			print "[$i]=" . $node->data[1] . " (" . $node->data[0] . ")\n";
 			$node = $node->next;
 			$i++;
 		}
 	}
-	
-	function size() {
+
+	public function size()
+	{
 		return $this->size;
 	}
-	
-	function peak() {
+
+	public function peak()
+	{
 		return $this->liststart->data;
 	}
-	
-	function remove() {
-		$x = $this->peak();
+
+	public function popFirst()
+	{
+		$firstElementData = $this->peak();
 		$this->size = $this->size - 1;
 		$this->liststart = $this->liststart->next;
 		//print "Debug: Removed node. New size=" . $this->size . "\n";
 		//$this->debug();
-		return $x;
+		return $firstElementData;
 	}
 }
